@@ -6,6 +6,16 @@ public class PhysicsCalculatorTester {
     void AccelerationShouldReturnZeroIfNoForce() {
         PhysicsCalculator testCalc = new PhysicsCalculator();
         PhysicsObject testObject = new PhysicsObject(10);
-        Assertions.assertTrue(testCalc.calculateAcceleration(testObject).equals(0));
+        Vector3D calculatedAccel = testCalc.calculateAcceleration(testObject);
+        Assertions.assertTrue(calculatedAccel.equals(new Vector3D(0, 0, 0)));
+    }
+
+    @Test
+    void AccelerationShouldCalculateCorrectlyWithNormalValues() {
+        PhysicsCalculator testCalc = new PhysicsCalculator();
+        PhysicsObject testObject = new PhysicsObject(10);
+        testObject.xForces.add(new Double(30));
+        Vector3D calculatedAccel = testCalc.calculateAcceleration(testObject);
+        Assertions.assertTrue(calculatedAccel.equals(new Vector3D(3, 0, 0)));
     }
 }
