@@ -33,18 +33,30 @@ public class PhysicsMenu extends Application {
         Label massLabel = new Label("Mass (kg):");
         grid.add(massLabel, 0, 0);
 
-        TextField massTextField = new TextField();
-        grid.add(massTextField, 1, 0);
+        TextField massField = new TextField();
+        grid.add(massField, 1, 0);
 
-        Label pw = new Label("Force (N):");
-        grid.add(pw, 0, 1);
+        Label forceX = new Label("Force X Component (N):");
+        grid.add(forceX, 0, 1);
 
-        TextField forceBox = new TextField();
-        grid.add(forceBox, 1, 1);
+        TextField forceXField = new TextField();
+        grid.add(forceXField, 1, 1);
+
+        Label forceY = new Label("Force Y Component (N):");
+        grid.add(forceY, 0, 2);
+
+        TextField forceYField = new TextField();
+        grid.add(forceYField, 1, 2);
+
+        Label forceZ = new Label("Force Z Component (N):");
+        grid.add(forceZ, 0, 3);
+
+        TextField forceZField = new TextField();
+        grid.add(forceZField, 1, 3);
 
         Button calcAccel = new Button();
         calcAccel.setText("Calculate Acceleration");
-        grid.add(calcAccel, 1, 2);
+        grid.add(calcAccel, 1, 4);
 
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 6);
@@ -53,13 +65,15 @@ public class PhysicsMenu extends Application {
 
             @Override
             public void handle(ActionEvent e) {
-                PhysicsObject physObj = new PhysicsObject((Double.parseDouble(massTextField.getText())));
-                physObj.xForces.add(Double.parseDouble(forceBox.getText()));
+                if (!massField.getText().isEmpty()) {
+                    PhysicsObject physObj = new PhysicsObject((Double.parseDouble(massField.getText())));
+                    physObj.xForces.add(Double.parseDouble(forceXField.getText()));
 
-                PhysicsCalculator physCalc = new PhysicsCalculator();
+                    PhysicsCalculator physCalc = new PhysicsCalculator();
 
-                actiontarget.setFill(Color.FIREBRICK);
-                actiontarget.setText(String.valueOf(physCalc.calculateAcceleration(physObj).getX()));
+                    actiontarget.setFill(Color.FIREBRICK);
+                    actiontarget.setText(String.valueOf(physCalc.calculateAcceleration(physObj).getX()));
+                }
             }
         });
 
