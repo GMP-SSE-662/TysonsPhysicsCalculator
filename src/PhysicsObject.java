@@ -44,4 +44,8 @@ public class PhysicsObject implements IPhysicsObject {
     public void setMass(double mass) {
         if (mass > 0) this.mass = mass;
     }
+
+    public Vector3D getVelocity(){ return velocity; }
+
+    public void setVelocity(Vector3D velocity){ this.velocity = velocity; }
 }

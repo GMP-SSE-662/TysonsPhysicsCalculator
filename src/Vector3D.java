@@ -19,6 +19,10 @@ public class Vector3D {
         return ((this.x == otherVector.getX()) && (this.y == otherVector.getY()) && (this.z == otherVector.getZ()));
     }
 
+    public double getMagnitude(){
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+    }
+
     public double getX(){
         return x;
     }

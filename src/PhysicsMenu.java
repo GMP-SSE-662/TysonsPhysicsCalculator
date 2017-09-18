@@ -6,13 +6,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -23,7 +19,7 @@ public class PhysicsMenu extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Welcome to Tyson's Physicks Calculator!");
+        primaryStage.setTitle("Welcome to Tyson's Physics Calculator!");
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -36,19 +32,19 @@ public class PhysicsMenu extends Application {
         TextField massField = new TextField();
         grid.add(massField, 1, 0);
 
-        Label forceX = new Label("Force X Component (N):");
+        Label forceX = new Label("Net Force X Component (N):");
         grid.add(forceX, 0, 1);
 
         TextField forceXField = new TextField();
         grid.add(forceXField, 1, 1);
 
-        Label forceY = new Label("Force Y Component (N):");
+        Label forceY = new Label("Net Force Y Component (N):");
         grid.add(forceY, 0, 2);
 
         TextField forceYField = new TextField();
         grid.add(forceYField, 1, 2);
 
-        Label forceZ = new Label("Force Z Component (N):");
+        Label forceZ = new Label("Net Force Z Component (N):");
         grid.add(forceZ, 0, 3);
 
         TextField forceZField = new TextField();
@@ -58,8 +54,30 @@ public class PhysicsMenu extends Application {
         calcAccel.setText("Calculate Acceleration");
         grid.add(calcAccel, 1, 4);
 
-        final Text actiontarget = new Text();
-        grid.add(actiontarget, 1, 6);
+        Label velocityX = new Label("Velocity X Component (m/s):");
+        grid.add(velocityX, 2, 1);
+
+        TextField velocityXField = new TextField();
+        grid.add(velocityXField, 3, 1);
+
+        Label velocityY = new Label("Velocity Y Component (m/s):");
+        grid.add(velocityY, 2, 2);
+
+        TextField velocityYField = new TextField();
+        grid.add(velocityYField, 3, 2);
+
+        Label velocityZ = new Label("Velocity Z Component (m/s):");
+        grid.add(velocityZ, 2, 3);
+
+        TextField velocityZField = new TextField();
+        grid.add(velocityZField, 3, 3);
+
+        Button calcKE = new Button();
+        calcKE.setText("Calculate Kinetic Engergy");
+        grid.add(calcKE, 3, 4);
+
+        final Text accelOutput = new Text();
+        grid.add(accelOutput, 1, 6);
 
         calcAccel.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -68,16 +86,49 @@ public class PhysicsMenu extends Application {
                 if (!massField.getText().isEmpty()) {
                     PhysicsObject physObj = new PhysicsObject((Double.parseDouble(massField.getText())));
                     physObj.xForces.add(Double.parseDouble(forceXField.getText()));
+                    physObj.yForces.add(Double.parseDouble(forceYField.getText()));
+                    physObj.zForces.add(Double.parseDouble(forceZField.getText()));
 
                     PhysicsCalculator physCalc = new PhysicsCalculator();
 
-                    actiontarget.setFill(Color.FIREBRICK);
-                    actiontarget.setText(String.valueOf(physCalc.calculateAcceleration(physObj).getX()));
+                    accelOutput.setFill(Color.FIREBRICK);
+
+                    String xString = String.valueOf(physCalc.calculateAcceleration(physObj).getX());
+                    String yString = String.valueOf(physCalc.calculateAcceleration(physObj).getY());
+                    String zString = String.valueOf(physCalc.calculateAcceleration(physObj).getZ());
+
+                    String accelString = "The acceleration is ("+xString+", "+yString+", "+zString+")";
+
+                    accelOutput.setText(accelString);
                 }
             }
         });
 
-        Scene scene = new Scene(grid, 500, 250);
+        final Text kineticEnergyOutput = new Text();
+        grid.add(kineticEnergyOutput, 3, 6);
+
+        calcKE.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                if (!massField.getText().isEmpty()) {
+                    PhysicsObject physObj = new PhysicsObject((Double.parseDouble(massField.getText())));
+                    physObj.setVelocity(new Vector3D(Double.parseDouble(velocityXField.getText()),
+                            Double.parseDouble(velocityYField.getText()),
+                            Double.parseDouble(velocityZField.getText())));
+
+                    PhysicsCalculator physCalc = new PhysicsCalculator();
+
+                    kineticEnergyOutput.setFill(Color.FIREBRICK);
+
+                    String kineticEnergyString = "The kinetic energy is " + physCalc.calculateKineticEnergy(physObj) + "J";
+
+                    kineticEnergyOutput.setText(kineticEnergyString);
+                }
+            }
+        });
+
+        Scene scene = new Scene(grid, 700, 250);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
